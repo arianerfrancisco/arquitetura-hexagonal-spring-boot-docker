@@ -43,7 +43,6 @@ Response →
 <br>
 <br>
 
-
 # Ferramentas
 
 - Intellij
@@ -55,3 +54,6 @@ Response →
 - Mysql
 - Feign Client
 - Map Struct
+
+# Reposítorio criado para fins de estudo. 
+## Curso:  Formação Júnior AWS Cloud e Spring Boot REST com Angular 13 - JDEV Treinamento
