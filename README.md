@@ -40,8 +40,6 @@ Response →
 ```
 
 <br>
-<br>
-<br>
 
 # Ferramentas
 
@@ -55,6 +53,6 @@ Response →
 - Feign Client
 - Map Struct
 
-# Repositório criado para fins de estudo. 
+## Repositório criado para fins de estudo. 
 ### Curso
 - Formação Júnior AWS Cloud e Spring Boot REST com Angular 13 - JDEV Treinamento
