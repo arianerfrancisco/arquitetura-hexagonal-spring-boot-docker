@@ -6,7 +6,8 @@ import br.com.boletojuros.core.domain.enums.TipoBoleto;
 import br.com.boletojuros.core.domain.enums.TipoExcecao;
 import br.com.boletojuros.core.exception.ApplicationException;
 import br.com.boletojuros.core.port.in.CalculoBoletoPort;
-import br.com.boletojuros.core.port.out.ComplementoBoletPort;
+import br.com.boletojuros.core.port.out.ComplementoBoletoPort;
+import br.com.boletojuros.core.port.out.SalvarCalculoBoletoPort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,10 +19,12 @@ import java.time.temporal.ChronoUnit;
 public class CalcularBoletoUseCase implements CalculoBoletoPort {
 
     private static final BigDecimal JUROS_DIARIO =BigDecimal.valueOf(0.033);
-    private final ComplementoBoletPort complementoBoletPort;
+    private final ComplementoBoletoPort complementoBoletPort;
+    private final SalvarCalculoBoletoPort salvarCalculoBoletoPort;
 
-    public CalcularBoletoUseCase(ComplementoBoletPort complementoBoletPort) {
+    public CalcularBoletoUseCase(ComplementoBoletoPort complementoBoletPort, SalvarCalculoBoletoPort salvarCalculoBoletoPort) {
         this.complementoBoletPort = complementoBoletPort;
+        this.salvarCalculoBoletoPort = salvarCalculoBoletoPort;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class CalcularBoletoUseCase implements CalculoBoletoPort {
         var boleto = complementoBoletPort.executar(codigo);
         validar(boleto);
 
+        // calcular valor boleto com juros
         var diasVencidos = getDiasVencidos(boleto.getDataVencimento(),dataPagamento);
         var valorJurosDia= JUROS_DIARIO.multiply(boleto.getValor().divide(BigDecimal.valueOf(100)));
         var juros = valorJurosDia.multiply(BigDecimal.valueOf(diasVencidos)).setScale(2, RoundingMode.HALF_EVEN);
@@ -41,7 +45,11 @@ public class CalcularBoletoUseCase implements CalculoBoletoPort {
                 .valor(boleto.getValor().add(juros))
                 .tipo(boleto.getTipo())
                 .build();
-        return null;
+
+        //salvar boleto
+        salvarCalculoBoletoPort.executar(boletoCalculado);
+
+        return boletoCalculado;
     }
 
     private void validar(Boleto boleto){
