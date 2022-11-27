@@ -56,3 +56,5 @@ Response →
 ## Repositório criado para fins de estudo. 
 ### Curso
 - Formação Júnior AWS Cloud e Spring Boot REST com Angular 13 - JDEV Treinamento
+
+![45](https://user-images.githubusercontent.com/72419533/204140906-94d6a875-e2c2-4ca7-af24-3f8ac2580ed3.PNG)
